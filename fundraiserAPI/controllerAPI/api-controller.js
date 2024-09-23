@@ -96,7 +96,7 @@ router.get("/fundraiser/:id",(req,res) =>{
                     INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID LEFT JOIN DONATION ON FUNDRAISER.FUNDRAISER_ID = DONATION.FUNDRAISER_ID 
                     WHERE FUNDRAISER.FUNDRAISER_ID =` + req.params.id,(err,records, fields) =>{
         if(err){
-            console.log("Error while retrieving active fundraisers");   //Logs an error
+            console.log("Error while retrieving fundraiser data");   //Logs an error
         }
         else {
             //Create an object with multiple properties. These properties are set using the API response. In the case that multiple fundraisers are returned due to multiple donations,
@@ -129,6 +129,32 @@ router.get("/fundraiser/:id",(req,res) =>{
         }
     })
 })
+
+//POST Request 1 - Adding donations
+//HAS NOT BEEN TESTED YET - Couldn't figure out how to test in Postman, can test on client-side donation page once coded
+router.post("/donation", (req,res) =>{
+
+    const id = req.query.id;
+    const amount = req.query.amount;
+    const giver = req.query.giver;
+
+    //MySQL Query - the now() function is supposed to log current date/time. Added auto-increment to database for donation ID Hope this works >.>
+    let query = `INSERT INTO DONATION (DATE, AMOUNT, GIVER, FUNDRAISER_ID) 
+    VALUES (now(), '${amount}', '${giver}', '${id}');`
+
+    connection.query(query,(err) => {
+        if(err){
+            res.sendStatus(400);  //Sends a bad request status code
+            console.log("Error while entering new donation data");   //Logs an error
+        }
+        else {
+            res.sendStatus(201);  //Sends a successful status code
+        }
+    })
+})
+
+
+
 
 //Exports the module - must go at end of file
 module.exports = router;
