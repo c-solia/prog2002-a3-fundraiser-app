@@ -2,6 +2,7 @@ var dbcon = require("../crowdfunding_db.js");
 var express = require("express");
 var router = express.Router();
 
+router.use(express.json());
 
 var connection = dbcon.getConnection();
 
@@ -153,7 +154,35 @@ router.post("/donation", (req,res) =>{
     })
 })
 
+//POST Request 2 - TESTING JSON BODY FORMAT
+router.post("/add-fundraiser", (req,res) =>{
 
+    console.log(req.body);
+
+    //The JSON body sent by the admin-side website should have the body params listed below
+    const organiser = req.body.ORGANISER;
+    const caption = req.body.CAPTION;
+    const target = req.body.TARGET_FUNDING;
+    const current = req.body.CURRENT_FUNDING;
+    const city = req.body.CITY;
+    const active = req.body.ACTIVE;             //This is boolean in MySQL, should be able to accept TRUE / FALSE or 1 / 0 respectively
+    const cat_id = req.body.CATEGORY_ID;   
+    const imgUrl = req.body.IMG_URL || '';       //OPTIONAL - if not included, will revert to an empty string
+
+    //MySQL Query - Added auto-increment to database for fundraiser_ID, need to test if it works
+    let query = `INSERT INTO FUNDRAISER (ORGANIZER, CAPTION, TARGET_FUNDING, CURRENT_FUNDING, CITY, ACTIVE, CATEGORY_ID, IMG_URL) 
+    VALUES ('${organiser}', '${caption}', ${target}, ${current}, '${city}', ${active}, ${cat_id}, '${imgUrl}');`
+
+    connection.query(query,(err) => {
+        if(err){
+            res.sendStatus(400);  //Sends a bad request status code
+            console.log(err, "Error while adding new fundraiser");   //Logs an error
+        }
+        else {
+            res.sendStatus(201);  //Sends a successful status code
+        }
+    })
+})
 
 
 //Exports the module - must go at end of file
