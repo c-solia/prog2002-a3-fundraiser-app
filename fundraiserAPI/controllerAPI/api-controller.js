@@ -70,16 +70,63 @@ router.get("/search",(req,res) =>{
     })
 })
 
-//Get request 4 - Used to retrive details of a fundraiser which is specified by the (id) protion of the request URL
+//Get request 4 - Used to retrive details of a fundraiser which is specified by the (id) protion of the request URL. Used for Assessment 2. Replaced by the next Get Request below for Assessment 3.
+// router.get("/fundraiser/:id",(req,res) =>{
+//         connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID, FUNDRAISER.ORGANIZER, FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.IMG_URL, CATEGORY.NAME AS CATEGORY_NAME 
+//         FROM FUNDRAISER INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID WHERE FUNDRAISER.FUNDRAISER_ID =` + req.params.id,(err,records, fields) =>{
+//     if(err){
+//         console.log("Error while retrieving active fundraisers");   //Logs an error
+//     }
+//     else{
+//         res.send(records);  //Sends the returned records as a response
+//     }
+//     })
+// })
+
+//Assessment 3 API's below
+
+/** Get Request - Retrieve fundraiser details by ID, including list of donations. Each donation id will cause this API to return another fundraiser and will return an array of fundraisers.
+*   To fix this, I create a single fundraiser object which contains all the properties of a fundraiser, but the donations property is converted to an array.
+*   A for-each loop is run over all of the returned fundraisers and their donation data is pushed in the fundraiser object's donations array.
+*   By doing this, I can return only a single object, and not an array of multiple fundraisers. This makes response handling much easier on the client side. 
+*/
 router.get("/fundraiser/:id",(req,res) =>{
-        connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID, FUNDRAISER.ORGANIZER, FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.IMG_URL, CATEGORY.NAME AS CATEGORY_NAME 
-        FROM FUNDRAISER INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID WHERE FUNDRAISER.FUNDRAISER_ID =` + req.params.id,(err,records, fields) =>{
-    if(err){
-        console.log("Error while retrieving active fundraisers");   //Logs an error
-    }
-    else{
-        res.send(records);  //Sends the returned records as a response
-    }
+    connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID,FUNDRAISER.ORGANIZER,FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.IMG_URL,
+                    CATEGORY.NAME AS CATEGORY_NAME, DONATION.DONATION_ID, DONATION.DATE, DONATION.AMOUNT, DONATION.GIVER FROM FUNDRAISER
+                    INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID LEFT JOIN DONATION ON FUNDRAISER.FUNDRAISER_ID = DONATION.FUNDRAISER_ID 
+                    WHERE FUNDRAISER.FUNDRAISER_ID =` + req.params.id,(err,records, fields) =>{
+        if(err){
+            console.log("Error while retrieving active fundraisers");   //Logs an error
+        }
+        else {
+            //Create an object with multiple properties. These properties are set using the API response. In the case that multiple fundraisers are returned due to multiple donations,
+            //The fundraiser object will take the properties of the first fundraiser returned.
+
+            const fundraiser = {
+                fundraiser_id: records[0].FUNDRAISER_ID,
+                organizer: records[0].ORGANIZER,
+                caption: records[0].CAPTION,
+                target_funding: records[0].TARGET_FUNDING,
+                current_funding: records[0].CURRENT_FUNDING,
+                city: records[0].CITY,
+                active: records[0].ACTIVE,
+                img_url: records[0].IMG_URL,
+                category_name: records[0].CATEGORY_NAME,
+                donations: []       //An array that will be populated with donation data from each fundraiser returned
+              };
+        
+            //Loops through each fundraiser response and pushes the donation data into the fundraiser object 'donations' array
+            records.forEach(record => {
+                fundraiser.donations.push({
+                    donation_id: record.DONATION_ID,
+                    date: record.DATE,
+                    amount: record.AMOUNT,
+                    giver: record.GIVER
+                });
+            });
+
+        res.send(fundraiser);  //Sends the fundraiser object as a response
+        }
     })
 })
 

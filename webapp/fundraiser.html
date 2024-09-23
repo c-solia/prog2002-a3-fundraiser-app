@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PiggyBank</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
     <!-- page title in header -->
     <div id="title">
@@ -42,55 +44,61 @@
             console.log(id);
 
             //Uses the id for api call
-            fetch("http://localhost:3060/fundraiser/"+id)
-            .then(response =>  response.json())
-            .then(data => {
-            console.log(data);
-            
-            //Sets the 'data' div block to empty
-            const dataDiv = document.getElementById('data');
-            dataDiv.innerHTML = "";
-                
-            if(data.length > 0){
-                data.forEach(   f => {
+            fetch("http://localhost:3060/fundraiser/" + id)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                    //Sets the 'data' div block to empty
+                    const dataDiv = document.getElementById('data');
+                    dataDiv.innerHTML = "";
+
                     const newFund = document.createElement("div");  //Creates new div
                     newFund.className = 'fund'; //Sets the class name of the new div
 
                     //Sets the innerHTML of the new div
                     newFund.innerHTML = `
                     <br>
-                    <h2>${f.ORGANIZER} needs your support!</h2>
+                    <h2>${data.organizer} needs your support!</h2>
                     <br>
                     <div class="row">
                         <div class="column">
-                            <p id="desc"><strong>${f.CAPTION}</strong></p>
-                            <p><strong>Funds Raised:</strong> $${f.CURRENT_FUNDING} / $${f.TARGET_FUNDING}</p>
-                            <p><strong>City:</strong> ${f.CITY}</p>
-                            <p><strong>Category:</strong> ${f.CATEGORY_NAME}</p>
-                            <p><strong>Active:</strong> ${f.ACTIVE ? 'Yes' : 'No'}</p>
-                            <p><strong>Fundraiser #</strong>${f.FUNDRAISER_ID}</p>
-                            <button id="donateButton" onclick="donateMessage()" type="button">DONATE NOW</button>
+                           <img src="${data.img_url}"> 
                         </div>
-
                         <div class="column">
-                           <img src="${f.IMG_URL}"> 
+                            <p id="desc"><strong>${data.caption}</strong></p>
+                            <p><strong>Funds Raised:</strong> $${data.current_funding} / $${data.target_funding}</p>
+                            <p><strong>City:</strong> ${data.city}</p>
+                            <p><strong>Category:</strong> ${data.category_name}</p>
+                            <p><strong>Active:</strong> ${data.active ? 'Yes' : 'No'}</p>
+                            <p><strong>Fundraiser #</strong>${data.fundraiser_id}</p>
+                            <button id="donateButton" onclick="donateMessage()" type="button">DONATE NOW</button>
+                            <br>
+                            <br>
+                            <p>Donations</p>
+                            <p>Donation ID: ${data.donations[0].donation_id}</p>
+                            <p>Donation Date: ${data.donations[0].date}</p>
+                            <p>Donation Amount: ${data.donations[0].amount}</p>
+                            <p>Donation Giver: ${data.donations[0].giver}</p>
+
+
                         </div>
                     </div>
-                    `;        
+                    `;
                     dataDiv.appendChild(newFund);   //Adds this new div into the 'data' div
+
                 })
-            }
-        })
-        //Error handling
-        .catch(error => {
-            console.error("Error occured while fetching data", error);
-            document.getElementById('data').textContent="Failed to load data";
-        });
+                //Error handling
+                .catch(error => {
+                    console.error("Error occured while fetching data", error);
+                    document.getElementById('data').textContent = "Failed to load data";
+                });
         }
 
         //When the page first loads, calls the loadPage() function to fetch API data and populate the page
         window.onload = loadPage();
-        
+
     </script>
 </body>
+
 </html>
