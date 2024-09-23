@@ -1,0 +1,205 @@
+/* Website background */
+body {
+    background-color: #F7F9F2;
+}
+
+/* Paragraph text color */
+p {
+    color: #304463;
+}
+
+/* Heading stylings */
+h1, h2, h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: #304463;
+}
+
+/* Centers the nav menu */
+#menu {
+    display: flex;
+    justify-content: center;
+}
+
+/* Styling for nav menu */
+.nav {
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+    color: aliceblue;
+    background-color:hsl(277, 100%, 38%);
+    float:left;
+    padding: 10px 20px;
+    margin: 1.5px; 
+}
+
+/* Hover effect for nav menu */
+.nav:hover {
+    background-color: hsla(201, 100%, 80%, 0.506);
+    color: #000000;
+}
+
+/* Centers the about section on home page */
+#about {
+    align-items: center;
+}
+
+/* Centers the paragraph text in about section on home page */
+#about p {
+    text-align: center;
+}
+
+/* Styling for the cash number on home page */
+#cash {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25pt;
+    font-weight: bold;
+    color: rgb(255, 157, 0);
+}
+
+/* Positioning for cards in the data div */
+#data {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Font styling for cards in the data div */
+#data p{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Removes dot points from unordered lists */
+ul {
+    list-style-type: none;
+}
+
+/* Image positioning */
+img {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+}
+
+/* Styling for fundraiser cards on home and search page */
+.card {
+    font-family: Tahoma, sans-serif;
+    width: 20%;
+    margin:10px;
+    box-shadow: 0 3px 7px 0 black;
+    transition: 0.5s;
+    border-radius: 10px;
+    background-color: aliceblue;
+}
+
+/* Hove effect for fundraiser cards on home and search page */
+.card:hover {
+    box-shadow: 0 8px 20px 0 black;
+}
+
+/* Styling for fundraiser card buttons on home and search page */
+.card button {
+    display: block;
+    margin: 0 auto;
+    background: #304463;
+    color: aliceblue;
+    border-radius: 999px;
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    padding: 8px 18px;
+}
+
+/* Hover background color change for fundraiser cards on home and search page */
+.card button:hover {
+    background: #215bfc;
+}
+
+/* Padding for fundraiser info div on home and search page */
+.fundraiser-info {
+    padding:8px;
+}
+
+/* Centers the text in the footer */
+#contact {
+    text-align: center;
+}
+
+/* Styling for text inputs on search page */
+#organiser, #city {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+/* Styling for select input on search page */
+#category {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 10px;
+}
+
+/* Styling for the form on search page */
+#searchform {
+    width: 30%;
+    margin: auto;
+}
+
+/* Label styling for search page */
+label {
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    display:flex;
+    flex-direction:column;
+    margin:8px;
+}
+
+/* Input styling for search page */
+input {
+    font-family: Tahoma, sans-serif;
+    font-size: 16px;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Select styling for search page */
+select {
+    font-family: Tahoma, sans-serif;
+    font-size: 16px;
+}
+
+/* Error Message styling for search page */
+#errorMessage {
+    text-align: center;
+    font-family: Tahoma, sans-serif;
+    font-size: 14pt;
+    font-weight: bold;
+    color: red;
+}
+
+/* Styling for the clean and search buttons on search page */
+#submit, #clear {
+    display: inline-block;
+    font-family: Tahoma, sans-serif;
+    font-size: 20px;
+}
+
+/* Div positioning on fundraiser page */
+.row {
+    display: flex;
+  }
+  
+/* Creates 2 columns per row on fundraiser page */
+.column {
+    flex: 50%;
+}
+  
+/* Text styling for fundraiser descriptions on fundraiser page */
+#desc{
+    font-size: 20pt;
+}
+
+/* Text styling for other text on fundraiser page */
+.column p {
+    font-size: 14pt;
+}
