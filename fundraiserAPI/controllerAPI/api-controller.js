@@ -131,13 +131,12 @@ router.get("/api/fundraiser/:id",(req,res) =>{
     })
 })
 
-//POST Request 1 - Adding donations
-//HAS NOT BEEN TESTED YET - Couldn't figure out how to test in Postman, can test on client-side donation page once coded
+//POST Request 1 - Adding donations - Tested and working on Postman
 router.post("/api/donation", (req,res) =>{
 
-    const id = req.query.id;
-    const amount = req.query.amount;
-    const giver = req.query.giver;
+    const id = req.query.id;            //FUNDRAISER_ID
+    const amount = req.query.amount;    //AMOUNT
+    const giver = req.query.giver;      //GIVER
 
     //MySQL Query - the now() function is supposed to log current date/time. Added auto-increment to database for donation ID Hope this works >.>
     let query = `INSERT INTO DONATION (DATE, AMOUNT, GIVER, FUNDRAISER_ID) 
@@ -146,7 +145,7 @@ router.post("/api/donation", (req,res) =>{
     connection.query(query,(err) => {
         if(err){
             res.sendStatus(400);  //Sends a bad request status code
-            console.log("Error while entering new donation data");   //Logs an error
+            console.log(err, "Error while entering new donation data");   //Logs an error
         }
         else {
             res.sendStatus(201);  //Sends a successful status code
