@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PiggyBank</title>
     <link rel="stylesheet" href="/styles.css">
-    <script type="text/javascript" src="/scripts/search.js"></script>
+    <script type="text/javascript" src="/scripts/donation.js"></script>
 </head>
 
 <body>
@@ -21,38 +21,38 @@
         <a href="/search" class="nav">SEARCH </a>
     </div>
 
-    <!-- Contains the form for users to input their search criteria  -->
+    <h2>DONATE NOW</h2>
+    <h3>Join us in creating meaningful change, one donation at a time</h3>
+
+
+    <div id="data">
+
+    </div>
+
+    
+            <!-- Contains the form for users to input their donation information  -->
     <div id="search">
-        <h3>Please enter at least one search criteria </h3>
-        <form id="searchform">
+        
+        <form id="donateform">
             <ul>
                 <li>
-                    <label for="organiser">Organiser </label>
-                    <input type="text" id="organiser" class="styledinput" />
+                    <label for="yourname">Your Name </label>
+                    <input type="text" id="yourname" class="styledinput"/>
                 </li>
                 <li>
-                    <label for="category">Category </label>
-                    <select id="category" id="category"></select>
+                    <label for="amount">Donation Amount </label>
+                    <input type="text" id="amount" class="styledinput" placeholder="Minimum $5 AUD"/>
                 </li>
                 <li>
-                    <label for="city">City </label>
-                    <input type="text" id="city" class="styledinput" />
-                </li>
-                <li>
-                    <input type="button" id="submit" value="Search" onclick="search()" />
-                    <input type="button" id="clear" value="Clear" onclick="clearTextBoxes()" />
+                    <input type="button" id="donate" value="DONATE" onclick="donate()" />
+                    <input type="button" id="cleardonation" value="Clear" onclick="clearTextBoxes()" />
                 </li>
             </ul>
-        </form>
+        </form> 
     </div>
 
     <!-- Error message element -->
     <p id="errorMessage"></p>
-
-    <!-- html code is dynamically written into this div -->
-    <div id="data">
-
-    </div>
 
     <!-- Contact details in footer -->
     <div id="contact">

@@ -124,7 +124,7 @@ img {
 }
 
 /* Styling for text inputs on search page */
-#organiser, #city {
+.styledinput{
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -178,7 +178,7 @@ select {
 }
 
 /* Styling for the clean and search buttons on search page */
-#submit, #clear {
+#submit, #clear  {
     display: inline-block;
     font-family: Tahoma, sans-serif;
     font-size: 20px;
@@ -203,4 +203,24 @@ select {
 /* Text styling for other text on fundraiser page */
 .column p {
     font-size: 14pt;
+}
+
+/* Styling for donate & Clear buttons on donation page */
+#donate, #cleardonation {
+    display: inline-block;
+    font-family: Tahoma, sans-serif;
+    font-size: 20px;
+}
+
+#donationimage {
+    max-width: 350px;
+    height: auto;
+    border-radius: 6px;
+
+}
+
+/* Styling for the form on donate page */
+#donateform {
+    width: 30%;
+    margin: auto;
 }
