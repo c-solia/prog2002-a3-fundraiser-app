@@ -184,6 +184,68 @@ router.post("/api/add-fundraiser", (req,res) =>{
     })
 })
 
+//PUT Request - Updating existing fundraiser based on fundraiser ID - Tested with postman and working
+router.put("/api/update-fundraiser", (req, res) => {
+
+    //The JSON body sent by the admin-side website should have the body params listed below
+    const fund_id = req.body.FUNDRAISER_ID;
+    const organiser = req.body.ORGANISER;
+    const caption = req.body.CAPTION;
+    const target = req.body.TARGET_FUNDING;
+    const current = req.body.CURRENT_FUNDING;
+    const city = req.body.CITY;
+    const active = req.body.ACTIVE;             //This is boolean in MySQL, should be able to accept TRUE / FALSE or 1 / 0 respectively
+    const cat_id = req.body.CATEGORY_ID;   
+    const imgUrl = req.body.IMG_URL || '';       //OPTIONAL - if not included, will revert to an empty string
+
+    //A string to concatenate all required SET fields which will be inserted into the main MySQL query
+    let subQuery = ``;
+    
+    //if statements to check if variables are populated
+    if (organiser != '') {                                  //If organiser is not empty
+        subQuery += ` ORGANIZER = '${organiser}',`;         //Adds the organiser to the subQuery
+    }
+    if (caption != '') {                                    //If caption is not empty
+        subQuery += ` CAPTION = '${caption}',`;             //Adds the caption to the subQuery
+    }
+    if (target !== '') {                                     //If target is not empty
+        subQuery += ` TARGET_FUNDING = '${target}',`;       //Adds the target to the subQuery
+    }
+    if (current !== '') {                                    //If current is not empty
+        subQuery += ` CURRENT_FUNDING = '${current}',`;     //Adds the current to the subQuery
+    }
+    if (city != '') {                                       //If city is not empty
+        subQuery += ` CITY = '${city}',`;                   //Adds the city to the subQuery
+    }
+    if (active !== '') {                   //If active is not empty
+        subQuery += ` ACTIVE = '${active}',`;               //Adds the active to the subQuery
+    }
+    if (cat_id !== '') {                                     //If cat_id is not empty
+        subQuery += ` CATEGORY_ID = '${cat_id}',`;          //Adds the category_id to the subQuery
+    }
+    if (imgUrl != '') {                                     //If imgURL is not empty
+        subQuery += ` IMG_URL = '${imgUrl}',`;              //Adds the IMG URL to the subQuery
+    }
+
+    //Removes the comma from the query (This comma will cause the SQL query to fail)
+    if (subQuery.endsWith(',')) {
+        subQuery = subQuery.slice(0, -1); 
+    }
+
+    //MySQL query
+    let query = `UPDATE FUNDRAISER SET ` + subQuery + ` WHERE FUNDRAISER_ID = '${fund_id}';`
+
+    connection.query(query,(err) => {
+        if(err){
+            res.sendStatus(400);  //Sends a bad request status code
+            console.log(err, "Error while updating fundraiser");   //Logs an error
+        }
+        else {
+            res.sendStatus(200);  //Sends a successful status code
+        }
+    })
+})
+
 
 //Exports the module - must go at end of file
 module.exports = router;
