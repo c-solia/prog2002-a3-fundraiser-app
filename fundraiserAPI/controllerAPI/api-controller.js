@@ -10,7 +10,7 @@ var connection = dbcon.getConnection();
 connection.connect();
 
 //Get request 1 - Returns details of all ACTIVE fundraisers
-router.get("/",(req,res) =>{
+router.get("/api/",(req,res) =>{
     connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID, FUNDRAISER.ORGANIZER, FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.IMG_URL, CATEGORY.NAME AS CATEGORY_NAME 
         FROM FUNDRAISER INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID WHERE FUNDRAISER.ACTIVE = TRUE`,(err,records, fields) =>{
     if(err){
@@ -23,7 +23,7 @@ router.get("/",(req,res) =>{
 })
 
 //GET request 2 - Returns all fundariser categories in the database
-router.get("/category",(req,res) =>{
+router.get("/api/category",(req,res) =>{
     connection.query(`SELECT NAME FROM CATEGORY;`,(err,records, fields) =>{
         if(err){
             console.log("Error while retrieving categories");   //Logs an error message
@@ -35,7 +35,7 @@ router.get("/category",(req,res) =>{
 })
 
 //Get request 3 - Used by the search page to return results that match user-inputted criteria. This API get method is able to handle one or multiple search criteria
-router.get("/search",(req,res) =>{
+router.get("/api/search",(req,res) =>{
 
     const category = req.query.category;    //Extracts the CATEGORY entry from the query string
     const city = req.query.city;            //Extracts the CITY entry from the query string
@@ -72,7 +72,7 @@ router.get("/search",(req,res) =>{
 })
 
 //Get request 4 - Used to retrive details of a fundraiser which is specified by the (id) protion of the request URL. Used for Assessment 2. Replaced by the next Get Request below for Assessment 3.
-// router.get("/fundraiser/:id",(req,res) =>{
+// router.get("/api/fundraiser/:id",(req,res) =>{
 //         connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID, FUNDRAISER.ORGANIZER, FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.IMG_URL, CATEGORY.NAME AS CATEGORY_NAME 
 //         FROM FUNDRAISER INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID WHERE FUNDRAISER.FUNDRAISER_ID =` + req.params.id,(err,records, fields) =>{
 //     if(err){
@@ -91,7 +91,7 @@ router.get("/search",(req,res) =>{
 *   A for-each loop is run over all of the returned fundraisers and their donation data is pushed in the fundraiser object's donations array.
 *   By doing this, I can return only a single object, and not an array of multiple fundraisers. This makes response handling much easier on the client side. 
 */
-router.get("/fundraiser/:id",(req,res) =>{
+router.get("/api/fundraiser/:id",(req,res) =>{
     connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID,FUNDRAISER.ORGANIZER,FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.IMG_URL,
                     CATEGORY.NAME AS CATEGORY_NAME, DONATION.DONATION_ID, DONATION.DATE, DONATION.AMOUNT, DONATION.GIVER FROM FUNDRAISER
                     INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID LEFT JOIN DONATION ON FUNDRAISER.FUNDRAISER_ID = DONATION.FUNDRAISER_ID 
@@ -133,7 +133,7 @@ router.get("/fundraiser/:id",(req,res) =>{
 
 //POST Request 1 - Adding donations
 //HAS NOT BEEN TESTED YET - Couldn't figure out how to test in Postman, can test on client-side donation page once coded
-router.post("/donation", (req,res) =>{
+router.post("/api/donation", (req,res) =>{
 
     const id = req.query.id;
     const amount = req.query.amount;
@@ -155,7 +155,7 @@ router.post("/donation", (req,res) =>{
 })
 
 //POST Request 2 - TESTING JSON BODY FORMAT
-router.post("/add-fundraiser", (req,res) =>{
+router.post("/api/add-fundraiser", (req,res) =>{
 
     console.log(req.body);
 

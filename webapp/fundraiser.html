@@ -44,7 +44,7 @@
             console.log(id);
 
             //Uses the id for api call
-            fetch("http://localhost:3060/fundraiser/" + id)
+            fetch("http://localhost:3060/api/fundraiser/" + id)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
