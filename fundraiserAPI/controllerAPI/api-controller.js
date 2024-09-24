@@ -61,7 +61,7 @@ router.get("/api/search",(req,res) =>{
     //Executes the query
     connection.query(query,(err,records, fields) =>{
     if(err){
-        console.log("Error while retrieving fundraisers", err); //Logs an error message and error
+        console.log("Error while retrieving fundraisers", err);                         //Logs an error message and error
         console.log("cat = " + category + ", city = "+ city + "  , org = "+ organiser); //Logs the user inputs used in api call - keep for troubleshooting
         console.log(req.query); //Logs the request query - keep for troubleshooting
     }
@@ -144,11 +144,11 @@ router.post("/api/donation", (req,res) =>{
 
     connection.query(query,(err) => {
         if(err){
-            res.sendStatus(400);  //Sends a bad request status code
+            res.sendStatus(400);                                          //Sends a bad request status code
             console.log(err, "Error while entering new donation data");   //Logs an error
         }
         else {
-            res.sendStatus(201);  //Sends a successful status code
+            res.sendStatus(201);                                          //Sends a successful status code
         }
     })
 })
@@ -236,15 +236,33 @@ router.put("/api/update-fundraiser", (req, res) => {
 
     connection.query(query,(err) => {
         if(err){
-            res.sendStatus(400);  //Sends a bad request status code
-            console.log(err, "Error while updating fundraiser");   //Logs an error
+            res.sendStatus(400);                                    //Sends a bad request status code
+            console.log(err, "Error while updating fundraiser");    //Logs an error
         }
         else {
-            res.sendStatus(200);  //Sends a successful status code
+            res.sendStatus(200);                                    //Sends a successful status code
         }
     })
 })
 
+//DELETE Request - Admin-side - Tested on postman
+//Send this API a fundraiser ID once checking to ensure it has no donations
+router.delete("/api/delete-fundraiser", (req,res) => {
+    
+    let fundraiser_id = req.query.id;   //Fundraiser_ID
+
+    let query = `DELETE FROM FUNDRAISER WHERE FUNDRAISER_ID = '${fundraiser_id}';`
+    
+    connection.query(query, (err) => {
+        if(err){
+            res.sendStatus(400);                               //Sends a bad request status code
+            console.log(err, "Unable to delete fundraiser");   //Logs an error
+        }
+        else {
+            res.sendStatus(200);                               //Sends a successful status code
+        }
+    });
+})
 
 //Exports the module - must go at end of file
 module.exports = router;
