@@ -131,6 +131,19 @@ router.get("/api/fundraiser/:id",(req,res) =>{
     })
 })
 
+//Get request 2 - Returns details of ALL fundraisers, regardless of active status
+router.get("/api/get-all",(req,res) =>{
+    connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID, FUNDRAISER.ORGANIZER, FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.IMG_URL, CATEGORY.NAME AS CATEGORY_NAME 
+        FROM FUNDRAISER INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID`,(err,records, fields) =>{
+    if(err){
+        console.log("Error while retrieving active fundraisers");   //Logs an error message
+    }
+    else{
+        res.send(records);  //Sends the returned records as a response
+    }
+    })
+})
+
 //POST Request 1 - Adding donations - Tested and working on Postman
 router.post("/api/donation", (req,res) =>{
 
@@ -246,7 +259,7 @@ router.put("/api/update-fundraiser", (req, res) => {
 })
 
 //DELETE Request - Admin-side - Tested on postman
-//Send this API a fundraiser ID once checking to ensure it has no donations
+//Send this API a fundraiser ID once checking to ensure it has no donations. Use the /api/get-all request to check if fundraiser_id exists before calling this
 router.delete("/api/delete-fundraiser", (req,res) => {
     
     let fundraiser_id = req.query.id;   //Fundraiser_ID
