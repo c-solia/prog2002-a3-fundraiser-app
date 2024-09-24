@@ -90,10 +90,10 @@
             }
             //If validation is passed, use the search parameters for an api call
             else {
-                console.log("http://localhost:3060/search?"+url);   //Logs the url - used for troubleshooting
+                console.log("http://localhost:3060/api/search?"+url);   //Logs the url - used for troubleshooting
 
                 //call GET API to retrive fundraiser info based on user input
-                fetch("http://localhost:3060/search?"+url)
+                fetch("http://localhost:3060/api/search?"+url)
                 .then(response => response.json())
                 .then(fund => {
                     const fundDiv = document.getElementById('data');
@@ -138,7 +138,7 @@
         }
 
         //call GET api to retrieve list of categories from database and populate the options in the search form
-        fetch("http://localhost:3060/category")
+        fetch("http://localhost:3060/api/category")
         .then(response => response.json())
         .then(categories => {
             const options = document.getElementById('category');

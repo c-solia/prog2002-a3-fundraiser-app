@@ -191,6 +191,7 @@ select {
   
 /* Creates 2 columns per row on fundraiser page */
 .column {
+    margin: 2%;
     flex: 50%;
 }
   
