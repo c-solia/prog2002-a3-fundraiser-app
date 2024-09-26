@@ -18,7 +18,40 @@
                     </ul>
             </section>
     
-            </main>
+            <section id="new-fundraiser">
+                <h2>Add New Fundraiser</h2>
+                <form id="new-fundraiser-form">
+                    <div>
+                        <label for="new-organizer">Organizer:</label>
+                        <input type="text" id="new-organizer" name="organizer" required>
+                    </div>
+                    <div>
+                        <label for="new-caption">Caption:</label>
+                        <input type="text" id="new-caption" name="caption" required>
+                    </div>
+                    <div>
+                        <label for="new-target-funding">Target Funding:</label>
+                        <input type="number" id="new-target-funding" name="targetFunding" required>
+                    </div>
+                    <div>
+                        <label for="new-city">City:</label>
+                        <input type="text" id="new-city" name="city">
+                    </div>
+                    <div>
+                        <label for="new-category">Category:</label>
+                        <select id="new-category" name="category" required>
+                            <option value="">Select a Category</option> 
+                        </select>
+                    </div>
+                    <div>
+                        <label for="new-img-url">Image URL:</label>
+                        <input type="text" id="new-img-url" name="imgUrl">
+                    </div>
+    
+                    <button type="button" id="save-new-fundraiser">Save</button>
+                </form>
+            </section>
+        </main>
     
         <footer>
         </footer>
