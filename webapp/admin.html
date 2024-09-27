@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-wdith, initial-scale=1.0">
+        <title>Admin - PiggyBank</title>
+        <link rel="stylesheet" href="../webapp/styles.css"
+    </head>
+    <body>
+        <header>
+            <h1>PiggyBank - Admin Panel</h1>
+        </header>
+    
+        <main>
+            <section id="fundraiser-list">
+                <h2>All Fundraisers</h2>
+                <ul id="fundraiser-items">
+                    </ul>
+            </section>
+    
+            <section id="new-fundraiser">
+                <h2>Add New Fundraiser</h2>
+                <form id="new-fundraiser-form">
+                    <div>
+                        <label for="new-organizer">Organizer:</label>
+                        <input type="text" id="new-organiser" name="organiser" required>
+                    </div>
+                    <div>
+                        <label for="new-caption">Caption:</label>
+                        <input type="text" id="new-caption" name="caption" required>
+                    </div>
+                    <div>
+                        <label for="new-target-funding">Target Funding:</label>
+                        <input type="number" id="new-target-funding" name="targetFunding" required>
+                    </div>
+                    <div>
+                        <label for="new-city">City:</label>
+                        <input type="text" id="new-city" name="city">
+                    </div>
+                    <div>
+                        <label for="new-category">Category:</label>
+                        <select id="new-category" name="category" required>
+                            <option value="">Select a Category</option> 
+                        </select>
+                    </div>
+                    <div>
+                        <label for="new-img-url">Image URL:</label>
+                        <input type="text" id="new-img-url" name="imgUrl">
+                    </div>
+    
+                    <button type="button" id="save-new-fundraiser">Save</button>
+                </form>
+            </section>
+        </main>
+    
+        <footer>
+        </footer>
+    
+        <script src="admin-script.js"></script> 
+    </body>
+</html>
