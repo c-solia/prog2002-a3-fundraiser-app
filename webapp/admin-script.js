@@ -19,10 +19,32 @@ function displayFundraisers(fundraisers) {
 
     fundraisers.forEach(fundraiser => {
         const listItem = document.createElement('li');
-        listItem.textContent = `ID: ${fundraiser.FUNDRAISER_ID} - ${fundraiser.CAPTION} (Organiser: ${fundraiser.ORGANISER})`;
+        listItem.textContent = `ID: ${fundraiser.FUNDRAISER_ID} - ${fundraiser.CAPTION} (Organiser: ${fundraiser.ORGANIZER})`;
 
         fundraiserItems.appendChild(listItem);
     });
+}
+
+// Fetch categories and populate the dropdown
+async function fetchCategories() {
+    try {
+        const response = await fetch(`${apiUrl}/category`);
+        const categories = await response.json();
+
+        const categorySelect = document.getElementById('new-category');
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.NAME;
+            option.textContent = category.NAME;
+            categorySelect.appendChild(option);
+        });
+
+        // store category data
+        window.categoriesData = categories;
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        alert("Couldn't fetch categories.");
+    }
 }
 
 // Handle new fundraiser using form submission
@@ -30,7 +52,7 @@ async function handleNewFundraiserSubmit() {
     // Get values from form
     const organiser = document.getElementById('new-organiser').value;
     const caption = document.getElementById('new-caption').value;
-    const targetFunding = document.getElementById('new-target-funding').value;
+    const targetFunding = parseFloat(document.getElementById('new-target-funding').value);
     const city = document.getElementById('new-city').value;
     const category = document.getElementById('new-category').value;
     const imgUrl = document.getElementById('new-img-url').value;
@@ -83,7 +105,7 @@ function getCategoryID(categoryName) {
         return matchingCategory ? matchingCategory.CATEGORY_ID : null; // return ID if found, otherwise null
     } else {
         // if categories data not available, fetch from the API
-        return fetch(`${apiURL}/categories`)
+        return fetch(`${apiUrl}/categories`)
             .then(response => response.json())
             .then(categories => {
                 const matchingCategory = categories.find(category => category.NAME === categoryName);
@@ -97,6 +119,11 @@ function getCategoryID(categoryName) {
     }
 }
 
+// attach event listener to the "Save" button
+document.getElementById('save-new-fundraiser').addEventListener('click', handleNewFundraiserSubmit);
 
 // Fetch and display fundraisers when the page loads
-window.onload = fetchAllFundraisers;
+window.onload = () => {
+    fetchAllFundraisers();
+    fetchCategories();
+};
