@@ -33,7 +33,7 @@ app.get("/fundraiser/:id", (req,res) => {
 
 // Routing for admin.html
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'admin', 'admin.html')); 
+    res.sendFile(path.join(__dirname, '..', 'admin', 'admin.html')); 
 });
 
 //Listens out for requests at the given port and hostname
