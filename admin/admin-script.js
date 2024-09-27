@@ -75,6 +75,28 @@ async function handleNewFundraiserSubmit() {
     }
 }
 
+// get category ID based on category name
+function getCategoryID(categoryName) {
+    // first check that categories data is available
+    if (window.categoriesData) {
+        const matchingCategory = window.categoriesData.find(category => category.NAME === categoryName);
+        return matchingCategory ? matchingCategory.CATEGORY_ID : null; // return ID if found, otherwise null
+    } else {
+        // if categories data not available, fetch from the API
+        return fetch(`${apiURL}/categories`)
+            .then(response => response.json())
+            .then(categories => {
+                const matchingCategory = categories.find(category => category.NAME === categoryName);
+                return matchingCategory ? matchingCategory.CATEGORY_ID : null;
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+                alert("Could not fetch categories.")
+                return null;
+            })
+    }
+}
+
 
 // Fetch and display fundraisers when the page loads
 window.onload = fetchAllFundraisers;
