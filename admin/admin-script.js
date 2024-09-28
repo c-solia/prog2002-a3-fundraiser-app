@@ -25,6 +25,29 @@ function displayFundraisers(fundraisers) {
     });
 }
 
+// Function to fetch categories and populate the dropdown
+async function fetchCategories() {
+    try {
+        const response = await fetch(`${apiUrl}/category`);
+        const categories = await response.json();
+
+        const categorySelect = document.getElementById('new-category'); // Assuming this is the ID of your category dropdown in admin.html
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.NAME; 
+            option.textContent = category.NAME;
+            categorySelect.appendChild(option);
+
+        });
+
+        // Store categories data globally (optional, for potential use in other parts of your script)
+        window.categoriesData = categories;
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Handle the error gracefully (display a message to the user)
+    }
+}
+
 // Handle new fundraiser using form submission
 async function handleNewFundraiserSubmit() {
     // Get values from form
@@ -40,7 +63,6 @@ async function handleNewFundraiserSubmit() {
         alert('Please fill in all required fields.')
         return;
     }
-
 
     // Prepare data to send in request body
     const newFundraiserData = {
@@ -83,7 +105,7 @@ function getCategoryID(categoryName) {
         return matchingCategory ? matchingCategory.CATEGORY_ID : null; // return ID if found, otherwise null
     } else {
         // if categories data not available, fetch from the API
-        return fetch(`${apiURL}/categories`)
+        return fetch(`${apiUrl}/categories`)
             .then(response => response.json())
             .then(categories => {
                 const matchingCategory = categories.find(category => category.NAME === categoryName);
@@ -97,6 +119,11 @@ function getCategoryID(categoryName) {
     }
 }
 
+// Attach event listener to the "Save" button
+document.getElementById('save-new-fundraiser').addEventListener('click', handleNewFundraiserSubmit);
 
-// Fetch and display fundraisers when the page loads
-window.onload = fetchAllFundraisers;
+// Fetch categories and fundraisers when the page loads
+window.onload = () => {
+    fetchAllFundraisers();
+    fetchCategories();
+};
