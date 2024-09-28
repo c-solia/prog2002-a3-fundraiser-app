@@ -19,13 +19,13 @@ function displayFundraisers(fundraisers) {
 
     fundraisers.forEach(fundraiser => {
         const listItem = document.createElement('li');
-        listItem.textContent = `ID: ${fundraiser.FUNDRAISER_ID} - ${fundraiser.CAPTION} (Organiser: ${fundraiser.ORGANISER})`;
+        listItem.textContent = `ID: ${fundraiser.FUNDRAISER_ID} - ${fundraiser.CAPTION} (Organiser: ${fundraiser.ORGANIZER})`;
 
         fundraiserItems.appendChild(listItem);
     });
 }
 
-// Function to fetch categories and populate the dropdown
+// Function to fetch categories and populate the dropdown in new form
 async function fetchCategories() {
     try {
         const response = await fetch(`${apiUrl}/category`);
@@ -44,6 +44,28 @@ async function fetchCategories() {
         window.categoriesData = categories;
     } catch (error) {
         console.error('Error fetching categories:', error);
+    }
+}
+
+// Function to fetch categories and populate the dropdown in update form
+async function fetchCategoriesForUpdate() {
+    try {
+        const response = await fetch(`${apiUrl}/category`);
+        const categories = await response.json();
+
+        const categorySelect = document.getElementById("update-category"); 
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.CATEGORY_ID; 
+            option.textContent = category.NAME;
+            categorySelect.appendChild(option);
+
+        });
+
+        // Store categories data globally
+        window.categoriesData = categories;
+    } catch (error) {
+        console.error('Error fetching categories for update form:', error);
     }
 }
 
@@ -71,7 +93,7 @@ async function handleNewFundraiserSubmit() {
         CURRENT_FUNDING: 0, // bold assumption here
         CITY: city,
         ACTIVE: true, // another assumption
-        CATEGORY_ID: getCategoryID(category),
+        CATEGORY_ID: category,
         IMG_URL: imgUrl
     };
 
@@ -93,6 +115,59 @@ async function handleNewFundraiserSubmit() {
     } catch (error) {
         console.error('Error adding fundraiser:', error);
         alert('Error adding fundraiser. Please try again later.');
+    }
+}
+
+// show "update fundraiser" form and populate it with data
+async function showUpdateForm(fundraiserId) {
+    try {
+        // fetch fundraiser details using the API
+        const response = await fetch(`${apiUrl}/fundraiser/${fundraiserId}`);
+        const fundraiser = await response.json();
+
+        // fetch categories for the dropdown
+        await fetchCategoriesForUpdate();
+
+        // populate the form fields with the fundraiser data
+        document.getElementById('update-fundraiser-id').value = fundraiser.fundraiser_id;
+        document.getElementById('update-organizer').value = fundraiser.organizer;
+        document.getElementById('update-caption').value = fundraiser.caption;
+        document.getElementById('update-target-funding').value = fundraiser.target_funding;
+        document.getElementById('update-current-funding').value = fundraiser.current_funding;
+        document.getElementById('update-city').value = fundraiser.city;
+        document.getElementById('update-active').value = fundraiser.active ? 'true' : 'false';
+        document.getElementById('update-category').value = fundraiser.category_id;
+        document.getElementById('update-img-url').value = fundraiser.img_url;
+
+        // fetch and display donations for selected fundraiser
+        fetchAndDisplayDonations(fundraiser.donations); // pass donations array
+
+        // show the update form section
+        document.getElementById('update-fundraiser').style.display = 'block';
+    } catch (error) {
+        console.error('Error fetching fundraiser details for update:', error);
+        alert("Couldn't fetch fundraiser details for update.");
+    }
+}
+
+// fetch and display donations for the selected fundraiser to update
+function fetchAndDisplayDonations(donations) { // accept donations array directly
+    const donationList = document.getElementById('donation-list');
+    donationList.innerHTML = '';
+
+    if (donations && donations.length > 0) {
+        donations.forEach(donation => {
+            const listItem = document.createElement('li');
+            
+            // format donation date
+            const donationDate = new Date(donation.date);
+            const formattedDate = donationDate.toLocaleDateString();
+
+            listItem.textContent = `$${donation.amount} on ${formattedDate} by ${donation.giver}`;
+            donationList.appendChild(listItem);
+        });
+    } else {
+        donationList.innerHTML = '<li>No donations yet.</li>';
     }
 }
 
@@ -123,6 +198,20 @@ function getCategoryID(categoryName) {
 
 // Attach event listener to the "Save" button
 document.getElementById('save-new-fundraiser').addEventListener('click', handleNewFundraiserSubmit);
+
+// Attach event listener to the "Edit" button
+document.getElementById('edit-fundraiser').addEventListener('click', () => {
+    const fundraiserIdToUpdate = document.getElementById('fundraiser-to-update').value;
+
+    // Validate that an ID is entered
+    if (fundraiserIdToUpdate === '') {
+        alert('Please enter a Fundraiser ID to update.');
+        return;
+    }
+
+    // Call the showUpdateForm function with the provided ID
+    showUpdateForm(fundraiserIdToUpdate);
+});
 
 // Fetch categories and fundraisers when the page loads
 window.onload = () => {

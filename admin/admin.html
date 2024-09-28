@@ -16,6 +16,11 @@
                 <h2>All Fundraisers</h2>
                 <ul id="fundraiser-items">
                     </ul>
+                <div>
+                    <label for="fundraiser-to-update">Enter Fundraiser ID to Update:</label>
+                    <input type="number" id="fundraiser-to-update" name="fundraiserIdToUpdate">
+                    <button type="button" id="edit-fundraiser">Edit</button>
+                </div>
             </section>
     
             <section id="new-fundraiser">
@@ -50,6 +55,58 @@
     
                     <button type="button" id="save-new-fundraiser">Save</button>
                 </form>
+            </section>
+
+            <section id="update-fundraiser" style="display: none;"> 
+                <h2>Update Fundraiser</h2>
+                <form id="update-fundraiser-form">
+                    <input type="hidden" id="update-fundraiser-id" name="fundraiserId"> 
+            
+                    <div>
+                        <label for="update-organizer">Organiser:</label>
+                        <input type="text" id="update-organizer" name="organizer" required>
+                    </div>
+                    </div>
+                    <div>
+                        <label for="update-caption">Caption:</label>
+                        <input type="text" id="update-caption" name="caption" required>
+                    </div>
+                    <div>
+                        <label for="update-target-funding">Target Funding:</label>
+                        <input type="number" id="update-target-funding" name="targetFunding" required>
+                    </div>
+                    <div>
+                        <label for="update-current-funding">Current Funding:</label>
+                        <input type="number" id="update-current-funding" name="currentFunding" required>
+                    </div>
+                    <div>
+                        <label for="update-city">City:</label>
+                        <input type="text" id="update-city" name="city">
+                    </div>
+                    <div>
+                        <label for="update-active">Active:</label>
+                        <select id="update-active" name="active">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="update-category">Category:</label>
+                        <select id="update-category" name="category" required>
+                            <option value="">Select a Category</option> 
+                        </select>
+                    </div>
+                    <div>
+                        <label for="update-img-url">Image URL:</label>
+                        <input type="text" id="update-img-url" name="imgUrl">
+                    </div>
+            
+                    <button type="button" id="save-updated-fundraiser">Update</button>
+                </form>
+            
+                <h3>Donations</h3>
+                <ul id="donation-list">
+                    </ul> 
             </section>
         </main>
     

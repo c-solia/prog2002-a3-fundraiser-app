@@ -92,7 +92,7 @@ router.get("/api/search",(req,res) =>{
 *   By doing this, I can return only a single object, and not an array of multiple fundraisers. This makes response handling much easier on the client side. 
 */
 router.get("/api/fundraiser/:id",(req,res) =>{
-    connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID,FUNDRAISER.ORGANIZER,FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.IMG_URL,
+    connection.query(`SELECT FUNDRAISER.FUNDRAISER_ID,FUNDRAISER.ORGANIZER,FUNDRAISER.CAPTION, FUNDRAISER.TARGET_FUNDING, FUNDRAISER.CURRENT_FUNDING, FUNDRAISER.CITY, FUNDRAISER.ACTIVE, FUNDRAISER.CATEGORY_ID, FUNDRAISER.IMG_URL,
                     CATEGORY.NAME AS CATEGORY_NAME, DONATION.DONATION_ID, DONATION.DATE, DONATION.AMOUNT, DONATION.GIVER FROM FUNDRAISER
                     INNER JOIN CATEGORY ON FUNDRAISER.CATEGORY_ID = CATEGORY.CATEGORY_ID LEFT JOIN DONATION ON FUNDRAISER.FUNDRAISER_ID = DONATION.FUNDRAISER_ID 
                     WHERE FUNDRAISER.FUNDRAISER_ID =` + req.params.id,(err,records, fields) =>{
@@ -113,6 +113,7 @@ router.get("/api/fundraiser/:id",(req,res) =>{
                 active: records[0].ACTIVE,
                 img_url: records[0].IMG_URL,
                 category_name: records[0].CATEGORY_NAME,
+                category_id: records[0].CATEGORY_ID, // added this for update for dropdown
                 donations: []       //An array that will be populated with donation data from each fundraiser returned
               };
         
