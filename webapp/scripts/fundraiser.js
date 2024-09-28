@@ -40,19 +40,34 @@ function loadPage() {
                         <p><strong>Active:</strong> ${data.active ? 'Yes' : 'No'}</p>
                         <p><strong>Fundraiser #</strong>${data.fundraiser_id}</p>
                         <button id="donateButton" onclick="location.href='http://localhost:3030/donation/${data.fundraiser_id}'" type="button">DONATE NOW</button>
-                        <br>
-                        <br>
-                        <p>Donations</p>
-                        <p>Donation ID: ${data.donations[0].donation_id}</p>
-                        <p>Donation Date: ${data.donations[0].date}</p>
-                        <p>Donation Amount: ${data.donations[0].amount}</p>
-                        <p>Donation Giver: ${data.donations[0].giver}</p>
-
-
                     </div>
                 </div>
                 `;
             dataDiv.appendChild(newFund);   //Adds this new div into the 'data' div
+
+            //Sets the 'dynamicdonations' div block to empty
+            const donations = document.getElementById('dynamicdonations');
+            donations.innerHTML = "";
+
+            data.donations.forEach(d => {
+                const newRow = document.createElement("div"); //Creates a new div
+                newRow.className = 'newrow'; //Sets the class name of the new div
+
+                //Creates a new row for each donation and populates the columns with donation data. Datetime is converted into a simple date.
+                newRow.innerHTML = `
+                    <div class="drow">
+                        <div class="dcolumn">${d.giver}</div>
+                        <div class="dcolumn">${d.amount}</div>
+                        <div class="dcolumn date">${new Date(d.date).toLocaleDateString('en-GB')}</div>
+                    </div>
+                `;
+
+                donations.appendChild(newRow);
+            });
+
+
+
+
 
         })
         //Error handling

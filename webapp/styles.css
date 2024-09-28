@@ -224,3 +224,46 @@ select {
     width: 30%;
     margin: auto;
 }
+
+/* ==========Styling for donation columns on fundraiser page======= */
+
+#table {
+    width: 50%;
+    border-collapse: collapse; 
+    margin: 18px auto;
+    font-family: Arial, sans-serif; 
+}
+
+#headingrow {
+    background-color: #6466ff;
+    color: aliceblue;
+}
+
+.drow {
+    display: flex;
+    justify-content: space-between; 
+    border-bottom: 1px solid aliceblue;
+    padding: 10px 0; 
+}
+
+.dcolumn.date {
+    text-align: left;
+}
+
+.dcolumn {
+    flex: 1; 
+    padding: 8px;
+}
+
+.drow:first-child {
+    font-weight: bold; 
+    background-color: aliceblue; 
+}
+
+.drow:nth-child(even) {
+    background-color: aliceblue;
+}
+
+.drow:hover {
+    background-color: #ffdddd; 
+}
