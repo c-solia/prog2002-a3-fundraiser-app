@@ -21,6 +21,22 @@ function displayFundraisers(fundraisers) {
         const listItem = document.createElement('li');
         listItem.textContent = `ID: ${fundraiser.FUNDRAISER_ID} - ${fundraiser.CAPTION} (Organiser: ${fundraiser.ORGANIZER})`;
 
+        // add "edit" buttons
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => {
+            showUpdateForm(fundraiser.FUNDRAISER_ID);
+        });
+        listItem.appendChild(editButton);
+
+        // add "delete" buttons
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => {
+            handleDelete(fundraiser.FUNDRAISER_ID);
+        });
+        listItem.appendChild(deleteButton);
+
         fundraiserItems.appendChild(listItem);
     });
 }
@@ -222,6 +238,28 @@ async function handleUpdateFundraiserSubmit() {
     } catch (error) {
         console.error('Error updating fundraiser:', error);
         alert('Error updating fundraiser. Please try again later.');
+    }
+}
+
+// Handle delete operation
+async function handleDelete(fundraiserId) {
+    if (confirm('Are you sure you want to delete this fundraiser?')) { 
+        try {
+            const response = await fetch(`${apiUrl}/delete-fundraiser?id=${fundraiserId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Fundraiser deleted successfully!');
+                fetchAllFundraisers(); 
+            } else {
+                console.error('Error deleting fundraiser:', response.statusText);
+                alert('Error deleting fundraiser. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error deleting fundraiser:', error);
+            alert('Error deleting fundraiser. Please try again.');
+        }
     }
 }
 
