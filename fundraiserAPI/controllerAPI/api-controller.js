@@ -24,7 +24,7 @@ router.get("/api/",(req,res) =>{
 
 //GET request 2 - Returns all fundariser categories in the database
 router.get("/api/category",(req,res) =>{
-    connection.query(`SELECT NAME FROM CATEGORY;`,(err,records, fields) =>{
+    connection.query(`SELECT CATEGORY_ID, NAME FROM CATEGORY;`,(err,records, fields) =>{
         if(err){
             console.log("Error while retrieving categories");   //Logs an error message
         }
