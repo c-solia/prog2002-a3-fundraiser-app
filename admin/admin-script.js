@@ -171,6 +171,60 @@ function fetchAndDisplayDonations(donations) { // accept donations array directl
     }
 }
 
+// Handle the "Update Fundraiser" form submission
+async function handleUpdateFundraiserSubmit() {
+    // get updated values from the form fields
+    const fundraiserId = document.getElementById('update-fundraiser-id').value;
+    const organizer = document.getElementById('update-organizer').value;
+    const caption = document.getElementById('update-caption').value;
+    const targetFunding = parseFloat(document.getElementById('update-target-funding').value); 
+    const currentFunding = parseFloat(document.getElementById('update-current-funding').value);
+    const city = document.getElementById('update-city').value;
+    const active = document.getElementById('update-active').value === 'true';
+    const categoryId = document.getElementById('update-category').value;
+    const imgUrl = document.getElementById('update-img-url').value;
+    // validation
+    if (organizer === '' || caption === '' || isNaN(targetFunding) || isNaN(currentFunding) || categoryId === '') {
+        alert('Please fill in all required fields and ensure numerical values for funding.');
+        return; 
+    }
+    // prepare updated data object
+    const updatedFundraiserData = {
+        FUNDRAISER_ID: fundraiserId, 
+        ORGANISER: organizer,
+        CAPTION: caption,
+        TARGET_FUNDING: targetFunding,
+        CURRENT_FUNDING: currentFunding,
+        CITY: city,
+        ACTIVE: active ? 1 : 0,
+        CATEGORY_ID: categoryId, 
+        IMG_URL: imgUrl
+    };
+
+    try {
+        // make the PUT request
+        const response = await fetch(`${apiUrl}/update-fundraiser`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedFundraiserData)
+        });
+
+        if (response.ok) {
+            alert("Fundraiser updated successfully!");
+            fetchAllFundraisers(); // refresh list
+            document.getElementById('update-fundraiser').style.display = 'none';
+        } else {
+            console.error('Error updating fundraiser:', response.statusText);
+            alert('Error updating fundraiser. Please try again later.');
+        }
+    } catch (error) {
+        console.error('Error updating fundraiser:', error);
+        alert('Error updating fundraiser. Please try again later.');
+    }
+}
+
 // get category ID based on category name
 function getCategoryID(categoryName) {
     // first check that categories data is available
@@ -212,6 +266,9 @@ document.getElementById('edit-fundraiser').addEventListener('click', () => {
     // Call the showUpdateForm function with the provided ID
     showUpdateForm(fundraiserIdToUpdate);
 });
+
+// Attach event listener to the "Update" button
+document.getElementById('save-updated-fundraiser').addEventListener('click', handleUpdateFundraiserSubmit);
 
 // Fetch categories and fundraisers when the page loads
 window.onload = () => {
