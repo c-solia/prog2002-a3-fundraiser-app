@@ -31,20 +31,19 @@ async function fetchCategories() {
         const response = await fetch(`${apiUrl}/category`);
         const categories = await response.json();
 
-        const categorySelect = document.getElementById('new-category'); // Assuming this is the ID of your category dropdown in admin.html
+        const categorySelect = document.getElementById('new-category'); 
         categories.forEach(category => {
             const option = document.createElement('option');
-            option.value = category.NAME; 
+            option.value = category.CATEGORY_ID; 
             option.textContent = category.NAME;
             categorySelect.appendChild(option);
 
         });
 
-        // Store categories data globally (optional, for potential use in other parts of your script)
+        // Store categories data globally
         window.categoriesData = categories;
     } catch (error) {
         console.error('Error fetching categories:', error);
-        // Handle the error gracefully (display a message to the user)
     }
 }
 
@@ -101,10 +100,13 @@ async function handleNewFundraiserSubmit() {
 function getCategoryID(categoryName) {
     // first check that categories data is available
     if (window.categoriesData) {
+        console.log("Categories data is available.")
         const matchingCategory = window.categoriesData.find(category => category.NAME === categoryName);
+        console.log("Matching category:", matchingCategory);
         return matchingCategory ? matchingCategory.CATEGORY_ID : null; // return ID if found, otherwise null
     } else {
         // if categories data not available, fetch from the API
+        //console.log("Categories data was not available, fetching...")
         return fetch(`${apiUrl}/categories`)
             .then(response => response.json())
             .then(categories => {
