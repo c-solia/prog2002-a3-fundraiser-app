@@ -1,34 +1,30 @@
 //extracts the fundraiser_id from the url
 const id = window.location.pathname.split("/").pop();
 
-//Validate user inputs and display a confirmation message
-function validate() {
-
-}
-
 //Sends the request
 function donation() {
     //create querystring elements
     var amount = document.getElementById("amount").value;
     var name = document.getElementById("yourname").value;
 
+    //Validation for amount field - Only accepts donations of $5 or more
     if (amount < 5) {
         alert("Minimum donation amount is AUD $5");
+    }
+    if (name == '') {        //Alert message if name field is empty
+        alert("Please your name and donation amount");
     } else {
-
+        //Adds the donation to the database
         let url = "id=" + id + "&amount=" + amount + "&giver=" + name;
 
         fetch("http://localhost:3060/api/donation?" + url, {
             method: 'POST'
         }).then(response => {
-            if (response.status === 201) {
-                // Success
-                alert("Thank you for your donation to " + document.getElementById("fund_name").innerHTML);
-                window.location.href = "/fundraiser/" + id;
-
+            if (response.status === 201) {  //Successful response status
+                alert("Thank you for your donation to " + document.getElementById("fund_name").innerHTML);  //Success alert
+                window.location.href = "/fundraiser/" + id;     //Redirects to the fundraiser page after acknowledging the donation alert
             } else {
-                // Error
-                alert("Error adding donation. Please try again.");
+                alert("Error adding donation. Please try again.");       // Error alert
             }
         }).catch(error => {
             console.error("Error:", error);
@@ -37,10 +33,9 @@ function donation() {
     }
 }
 
-
+//Clears inout fields 
 function clearTextBoxes() {
-    document.getElementById("donateform").reset();
-    document.getElementById("errorMessage").innerHTML = "";
+    document.getElementById("donateform").reset();  //Resets the form
 }
 
 fetch("http://localhost:3060/api/fundraiser/" + id)

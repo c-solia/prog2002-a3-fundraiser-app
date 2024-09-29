@@ -49,6 +49,7 @@ function loadPage() {
             const donations = document.getElementById('dynamicdonations');
             donations.innerHTML = "";
 
+            //For-each loops through the donations array and adds a new row to the table for each donation
             data.donations.forEach(d => {
                 const newRow = document.createElement("div"); //Creates a new div
                 newRow.className = 'newrow'; //Sets the class name of the new div
@@ -57,18 +58,13 @@ function loadPage() {
                 newRow.innerHTML = `
                     <div class="drow">
                         <div class="dcolumn">${d.giver}</div>
-                        <div class="dcolumn">${d.amount}</div>
+                        <div class="dcolumn">$${d.amount}</div>
                         <div class="dcolumn date">${new Date(d.date).toLocaleDateString('en-GB')}</div>
                     </div>
                 `;
 
-                donations.appendChild(newRow);
+                donations.appendChild(newRow);//Adds the new row to the table   
             });
-
-
-
-
-
         })
         //Error handling
         .catch(error => {

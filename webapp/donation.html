@@ -24,35 +24,32 @@
     <h2>DONATE NOW</h2>
     <h3>Join us in creating meaningful change, one donation at a time</h3>
 
-
+    <!-- Fundraiser data dynamically loaded into this div -->
     <div id="data">
 
     </div>
 
-    
-            <!-- Contains the form for users to input their donation information  -->
+
+    <!-- Contains the form for users to input their donation information  -->
     <div id="search">
-        
+
         <form id="donateform">
             <ul>
                 <li>
                     <label for="yourname">Your Name </label>
-                    <input type="text" id="yourname" class="styledinput"/>
+                    <input type="text" id="yourname" class="styledinput" />
                 </li>
                 <li>
                     <label for="amount">Donation Amount </label>
-                    <input type="number" id="amount" class="styledinput" placeholder="Minimum $5 AUD"/>
+                    <input type="number" id="amount" class="styledinput" placeholder="Minimum $5 AUD" />
                 </li>
                 <li>
-                    <input type="button" id="donate" value="DONATE" onclick="donation()"/>
-                    <input type="button" id="cleardonation" value="Clear" onclick="clearTextBoxes()"/>
+                    <input type="button" id="donate" value="DONATE" onclick="donation()" />
+                    <input type="button" id="cleardonation" value="Clear" onclick="clearTextBoxes()" />
                 </li>
             </ul>
-        </form> 
+        </form>
     </div>
-
-    <!-- Error message element -->
-    <p id="errorMessage"></p>
 
     <!-- Contact details in footer -->
     <div id="contact">
