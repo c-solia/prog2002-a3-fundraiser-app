@@ -9,7 +9,9 @@ p {
 }
 
 /* Heading stylings */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     color: #304463;
@@ -27,10 +29,10 @@ h1, h2, h3 {
     font-family: Arial, Helvetica, sans-serif;
     letter-spacing: 1px;
     color: aliceblue;
-    background-color:hsl(277, 100%, 38%);
-    float:left;
+    background-color: hsl(277, 100%, 38%);
+    float: left;
     padding: 10px 20px;
-    margin: 1.5px; 
+    margin: 1.5px;
 }
 
 /* Hover effect for nav menu */
@@ -65,7 +67,7 @@ h1, h2, h3 {
 }
 
 /* Font styling for cards in the data div */
-#data p{
+#data p {
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -84,7 +86,7 @@ img {
 .card {
     font-family: Tahoma, sans-serif;
     width: 20%;
-    margin:10px;
+    margin: 10px;
     box-shadow: 0 3px 7px 0 black;
     transition: 0.5s;
     border-radius: 10px;
@@ -115,7 +117,7 @@ img {
 
 /* Padding for fundraiser info div on home and search page */
 .fundraiser-info {
-    padding:8px;
+    padding: 8px;
 }
 
 /* Centers the text in the footer */
@@ -124,7 +126,7 @@ img {
 }
 
 /* Styling for text inputs on search page */
-#organiser, #city {
+.styledinput {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -149,17 +151,17 @@ img {
 label {
     font-family: Tahoma, sans-serif;
     font-size: 18px;
-    display:flex;
-    flex-direction:column;
-    margin:8px;
+    display: flex;
+    flex-direction: column;
+    margin: 8px;
 }
 
 /* Input styling for search page */
 input {
     font-family: Tahoma, sans-serif;
     font-size: 16px;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Select styling for search page */
@@ -178,7 +180,8 @@ select {
 }
 
 /* Styling for the clean and search buttons on search page */
-#submit, #clear {
+#submit,
+#clear {
     display: inline-block;
     font-family: Tahoma, sans-serif;
     font-size: 20px;
@@ -187,20 +190,112 @@ select {
 /* Div positioning on fundraiser page */
 .row {
     display: flex;
-  }
-  
+}
+
 /* Creates 2 columns per row on fundraiser page */
 .column {
     margin: 2%;
     flex: 50%;
 }
-  
+
 /* Text styling for fundraiser descriptions on fundraiser page */
-#desc{
+#desc {
     font-size: 20pt;
 }
 
 /* Text styling for other text on fundraiser page */
 .column p {
     font-size: 14pt;
+}
+
+/* Styling for donate & Clear buttons on donation page */
+#donate,
+#cleardonation {
+    display: inline-block;
+    background: hsl(277, 100%, 38%);
+    color: aliceblue;
+    border-radius: 999px;
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    padding: 8px 18px;
+}
+
+#donate:hover,
+#cleardonation:hover {
+    background-color: #a800ce;
+}
+
+#donationimage {
+    max-width: 350px;
+    height: auto;
+    border-radius: 6px;
+
+}
+
+/* Styling for the form on donate page */
+#donateform {
+    width: 30%;
+    margin: auto;
+}
+
+/* ==========Styling for donation columns on fundraiser page======= */
+
+#table {
+    width: 50%;
+    border-collapse: collapse;
+    margin: 18px auto;
+    font-family: Arial, sans-serif;
+}
+
+#headingrow {
+    background-color: #6466ff;
+    color: aliceblue;
+}
+
+.drow {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid aliceblue;
+    padding: 10px 0;
+}
+
+.dcolumn.date {
+    text-align: left;
+}
+
+.dcolumn {
+    flex: 1;
+    padding: 8px;
+}
+
+.drow:first-child {
+    font-weight: bold;
+    background-color: aliceblue;
+}
+
+.drow:nth-child(even) {
+    background-color: aliceblue;
+}
+
+.drow:hover {
+    background-color: #ffdddd;
+}
+
+/* ================ */
+
+/* donate button on fundraiser page */
+#donateButton {
+    display: block;
+    background: #ff9500db;
+    color: #31314c;
+    border-radius: 999px;
+    font-family: Tahoma, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 18px;
+}
+
+/* Donate button hover effect */
+#donateButton:hover {
+    background-color: #ffdd00;
 }

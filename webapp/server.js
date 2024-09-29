@@ -31,6 +31,11 @@ app.get("/fundraiser/:id", (req,res) => {
     res.sendFile(path.join(__dirname, "fundraiser.html"));
 });
 
+//Routing for donation.html
+app.get("/donation/:id", (req,res) => {
+    res.sendFile(path.join(__dirname, "donation.html"));
+});
+
 //Listens out for requests at the given port and hostname
 app.listen(port, hostname, ()=> {
     console.log(`Server running at http://${hostname}:${port}`)
