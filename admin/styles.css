@@ -204,3 +204,66 @@ select {
 .column p {
     font-size: 14pt;
 }
+
+
+/* fundraiser list styling on admin page */
+#fundraiser-list ul { 
+    list-style: none; 
+    padding: 0;
+}
+
+#fundraiser-list li {
+    padding: 12px;     /* Add padding around each list item */
+    border-bottom: 1px dashed #ccc; /* Add a dashed dotted border at the bottom */
+}
+
+/* EDIT and DELETE button styling */
+#fundraiser-list li button {
+    float: right;      /* Float the buttons to the right */
+    margin-left: 12px;
+    border-radius: 0.2;           
+    padding: 2px 10px;
+    cursor: pointer;
+}
+
+#fundraiser-list li button:hover { /* Add a hover effect (optional) */
+    opacity: 0.7; 
+}
+
+#new-fundraiser-form label,
+#update-fundraiser-form label {
+    display: block;    
+    text-align: center;  
+    margin-bottom: 5px;  /* Add some space between label and input */
+}
+
+#new-fundraiser-form input[type="text"],
+#new-fundraiser-form input[type="number"],
+#new-fundraiser-form select,
+#update-fundraiser-form input[type="text"],
+#update-fundraiser-form input[type="number"],
+#update-fundraiser-form select,
+#fundraiser-to-update { 
+    width: 50%;        
+    margin: 0 auto 15px;    
+    display: block;    
+}
+
+#new-fundraiser-form button,
+#update-fundraiser-form button {
+    display: block;     
+    margin: 10px auto;  
+    border-radius: 0.2; 
+    cursor: pointer;
+}
+
+#fundraiser-list > div {  /* Targets the div containing the ID input and Edit button */
+    text-align: center;
+}
+
+#admin-footer {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+    margin-top: 35px;
+}

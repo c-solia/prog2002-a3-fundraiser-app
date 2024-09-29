@@ -21,21 +21,21 @@ function displayFundraisers(fundraisers) {
         const listItem = document.createElement('li');
         listItem.textContent = `ID: ${fundraiser.FUNDRAISER_ID} - ${fundraiser.CAPTION} (Organiser: ${fundraiser.ORGANIZER})`;
 
-        // add "edit" buttons
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Edit';
-        editButton.addEventListener('click', () => {
-            showUpdateForm(fundraiser.FUNDRAISER_ID);
-        });
-        listItem.appendChild(editButton);
-
         // add "delete" buttons
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
+        deleteButton.textContent = 'DELETE';
         deleteButton.addEventListener('click', () => {
             handleDelete(fundraiser.FUNDRAISER_ID);
         });
         listItem.appendChild(deleteButton);
+        
+        // add "edit" buttons
+        const editButton = document.createElement('button');
+        editButton.textContent = 'EDIT';
+        editButton.addEventListener('click', () => {
+            showUpdateForm(fundraiser.FUNDRAISER_ID);
+        });
+        listItem.appendChild(editButton);
 
         fundraiserItems.appendChild(listItem);
     });
