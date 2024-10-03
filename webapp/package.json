@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "start": "node server.js",
-    "start-admin": "node admin/server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
