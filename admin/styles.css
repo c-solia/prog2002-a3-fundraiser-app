@@ -267,3 +267,23 @@ select {
     text-align: center;
     margin-top: 35px;
 }
+
+/* ========== Styling for donation columns on admin page ========= */
+
+#donation-list {
+    width: 50%;
+    border-collapse: collapse; 
+    margin: 18px auto; 
+    font-family: Arial, sans-serif;
+}
+
+#donation-list li {
+    display: flex; 
+    justify-content: space-between; 
+    border-bottom: 1px solid aliceblue; 
+    padding: 10px 0; 
+}
+
+#donation-list li { 
+    background-color: rgb(155, 208, 254); 
+}
