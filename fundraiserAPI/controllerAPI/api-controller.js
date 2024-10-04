@@ -167,7 +167,7 @@ router.post("/api/donation", (req,res) =>{
     })
 })
 
-//POST Request 2 - TESTING JSON BODY FORMAT
+//POST Request 2 - TESTING JSON BODY FORMAT - Now with Validation
 router.post("/api/add-fundraiser", (req,res) =>{
 
     console.log(req.body);
@@ -180,22 +180,37 @@ router.post("/api/add-fundraiser", (req,res) =>{
     const city = req.body.CITY;
     const active = req.body.ACTIVE;             //This is boolean in MySQL, should be able to accept TRUE / FALSE or 1 / 0 respectively
     const cat_id = req.body.CATEGORY_ID;   
-    const imgUrl = req.body.IMG_URL || '';       //OPTIONAL - if not included, will revert to an empty string
+    const imgUrl = req.body.IMG_URL || '';       //OPTIONAL - if not included, will revert to an empty string\\
 
-    //MySQL Query - Added auto-increment to database for fundraiser_ID, need to test if it works
+    // Validation
+    if (!organiser || !caption || !target || isNaN(target) || !cat_id || isNaN(cat_id) || !city || !active) {
+        return res.status(400).json({ error: 'Invalid or missing data. Please provide all required fields with valid values.' });
+    }
+
+    // Additionally, escape single quotes in strings (preventing SQL injection)
+    const escapedOrganiser = organiser.replace(/'/g, "''");
+    const escapedCaption = caption.replace(/'/g, "''");
+    const escapedCity = city.replace(/'/g, "''");
+
+    //MySQL Query (using parameterised query for security)
     let query = `INSERT INTO FUNDRAISER (ORGANIZER, CAPTION, TARGET_FUNDING, CURRENT_FUNDING, CITY, ACTIVE, CATEGORY_ID, IMG_URL) 
-    VALUES ('${organiser}', '${caption}', ${target}, ${current}, '${city}', ${active}, ${cat_id}, '${imgUrl}');`
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
-    connection.query(query,(err) => {
-        if(err){
-            res.sendStatus(400);  //Sends a bad request status code
-            console.log(err, "Error while adding new fundraiser");   //Logs an error
+    connection.query(query, [escapedOrganiser, escapedCaption, target, current, escapedCity, active, cat_id, imgUrl], (err) => {
+        if (err) {
+            console.error(err, "Error while adding new fundraiser");
+
+            // Check for specific error codes, these can be more informative
+            if (err.code === 'ER_DUP_ENTRY') {
+                return res.status(400).json({ error: 'Duplicate entry. A fundraiser with the same details might already exist.' });
+            }
+
+            return res.sendStatus(400); // not successful
+        } else {
+            res.sendStatus(201); // successful
         }
-        else {
-            res.sendStatus(201);  //Sends a successful status code
-        }
-    })
-})
+    });
+});
 
 //PUT Request - Updating existing fundraiser based on fundraiser ID - Tested with postman and working
 router.put("/api/update-fundraiser", (req, res) => {
