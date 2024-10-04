@@ -171,7 +171,7 @@ function fetchAndDisplayDonations(donations) { // accept donations array directl
     const donationList = document.getElementById('donation-list');
     donationList.innerHTML = '';
 
-    if (donations && donations.length > 0) {
+    if (donations && donations.length > 0 && donations[0].DONATION_ID !== null) {
         donations.forEach(donation => {
             const listItem = document.createElement('li');
             

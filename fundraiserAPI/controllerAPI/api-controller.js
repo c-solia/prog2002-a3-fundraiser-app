@@ -200,7 +200,7 @@ router.post("/api/add-fundraiser", (req,res) =>{
         if (err) {
             console.error(err, "Error while adding new fundraiser");
 
-            // Check for specific error codes, these can be more informative
+            // Check for duplicate error
             if (err.code === 'ER_DUP_ENTRY') {
                 return res.status(400).json({ error: 'Duplicate entry. A fundraiser with the same details might already exist.' });
             }
@@ -226,53 +226,72 @@ router.put("/api/update-fundraiser", (req, res) => {
     const cat_id = req.body.CATEGORY_ID;   
     const imgUrl = req.body.IMG_URL || '';       //OPTIONAL - if not included, will revert to an empty string
 
-    //A string to concatenate all required SET fields which will be inserted into the main MySQL query
-    let subQuery = ``;
-    
-    //if statements to check if variables are populated
-    if (organiser != '') {                                  //If organiser is not empty
-        subQuery += ` ORGANIZER = '${organiser}',`;         //Adds the organiser to the subQuery
-    }
-    if (caption != '') {                                    //If caption is not empty
-        subQuery += ` CAPTION = '${caption}',`;             //Adds the caption to the subQuery
-    }
-    if (target !== '') {                                     //If target is not empty
-        subQuery += ` TARGET_FUNDING = '${target}',`;       //Adds the target to the subQuery
-    }
-    if (current !== '') {                                    //If current is not empty
-        subQuery += ` CURRENT_FUNDING = '${current}',`;     //Adds the current to the subQuery
-    }
-    if (city != '') {                                       //If city is not empty
-        subQuery += ` CITY = '${city}',`;                   //Adds the city to the subQuery
-    }
-    if (active !== '') {                   //If active is not empty
-        subQuery += ` ACTIVE = '${active}',`;               //Adds the active to the subQuery
-    }
-    if (cat_id !== '') {                                     //If cat_id is not empty
-        subQuery += ` CATEGORY_ID = '${cat_id}',`;          //Adds the category_id to the subQuery
-    }
-    if (imgUrl != '') {                                     //If imgURL is not empty
-        subQuery += ` IMG_URL = '${imgUrl}',`;              //Adds the IMG URL to the subQuery
+    // Validation
+    if (!fund_id || isNaN(fund_id) || (!organiser && !caption && !target && !current && !city && active === '' && !cat_id && !imgUrl)) {
+        return res.status(400).json({ error: 'Invalid or missing data. Please provide at least one field to update and ensure valid values.' });
     }
 
-    //Removes the comma from the query (This comma will cause the SQL query to fail)
-    if (subQuery.endsWith(',')) {
-        subQuery = subQuery.slice(0, -1); 
+    // Additionally, escape single quotes in strings (preventing SQL injection)
+    const escapedOrganiser = organiser ? organiser.replace(/'/g, "''") : null;
+    const escapedCaption = caption ? caption.replace(/'/g, "''") : null;
+    const escapedCity = city ? city.replace(/'/g, "''") : null;
+    const escapedImgUrl = imgUrl ? imgUrl.replace(/'/g, "''") : null;
+
+    // Build the SET clause dynamically (using prepared values from validation and escape)
+    let setClause = [];
+    let queryParams = [];
+    if (escapedOrganiser) {
+        setClause.push('ORGANIZER = ?');
+        queryParams.push(escapedOrganiser);
+    }
+    if (escapedCaption) {
+        setClause.push('CAPTION = ?');
+        queryParams.push(escapedCaption);
+    }
+    if (target !== null && target !== '') { // Check for null and empty string
+        setClause.push('TARGET_FUNDING = ?');
+        queryParams.push(target);
+    }
+    if (current !== null && current !== '') { // Check for null and empty string
+        setClause.push('CURRENT_FUNDING = ?');
+        queryParams.push(current);
+    }
+    if (escapedCity) {
+        setClause.push('CITY = ?');
+        queryParams.push(escapedCity);
+    }
+    if (active !== '') {
+        setClause.push('ACTIVE = ?');
+        queryParams.push(active);
+    }
+    if (cat_id !== null && cat_id !== '') { // Check for null and empty string
+        setClause.push('CATEGORY_ID = ?');
+        queryParams.push(cat_id);
+    }
+    if (escapedImgUrl) {
+        setClause.push('IMG_URL = ?');
+        queryParams.push(escapedImgUrl);
     }
 
-    //MySQL query
-    let query = `UPDATE FUNDRAISER SET ` + subQuery + ` WHERE FUNDRAISER_ID = '${fund_id}';`
+    // MySQL Query (using prepared statement)
+    let query = `UPDATE FUNDRAISER SET ${setClause.join(', ')} WHERE FUNDRAISER_ID = ?`;
+    queryParams.push(fund_id); // Add the fundraiser ID to the parameters
 
-    connection.query(query,(err) => {
-        if(err){
-            res.sendStatus(400);                                    //Sends a bad request status code
-            console.log(err, "Error while updating fundraiser");    //Logs an error
+    connection.query(query, queryParams, (err) => {
+        if (err) {
+            console.error(err, "Error while updating fundraiser");
+
+            // Check for duplicate error
+            if (err.code === 'ER_DUP_ENTRY') {
+                return res.status(400).json({ error: 'Duplicate entry. A fundraiser with the same details might already exist.' });
+            }
+
+            return res.sendStatus(400); // Sends a bad request status code
+        } else {
+            res.sendStatus(200); // Sends a successful status code
         }
-        else {
-            res.sendStatus(200);                                    //Sends a successful status code
-        }
-    })
-})
+    });
+});
 
 //DELETE Request - Admin-side - Tested on postman
 //Send this API a fundraiser ID once checking to ensure it has no donations. Use the /api/get-all request to check if fundraiser_id exists before calling this
